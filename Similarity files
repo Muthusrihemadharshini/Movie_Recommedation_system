@@ -1,0 +1,94 @@
+Here’s a professional documentation you can use for your GitHub repository regarding the large "similarity pickles" files:
+
+---
+
+# Similarity Pickles Creation and Explanation
+
+## Introduction
+This repository uses **Similarity Pickles**, which are precomputed serialized files containing data structures used to speed up similarity calculations (e.g., for text, image, or entity comparisons). Due to their large size, these files are not included in the repository. Below, you'll find details on how to create them, why they are needed, and the format used.
+
+---
+
+## Purpose of Similarity Pickles
+The similarity pickle files store large, preprocessed similarity matrices, embeddings, or indexes that allow quick similarity queries during runtime. They are integral for the following tasks:
+- **Efficient Similarity Matching**: Reduces the overhead of computing similarity metrics on-the-fly.
+- **Storage of Precomputed Results**: Speeds up repetitive operations by caching reusable data.
+  
+---
+
+## Prerequisites for Generating Similarity Pickles
+Ensure you have installed the following libraries used to generate the similarity pickles:
+- Python 3.7 or later
+
+
+Commonly required Python libraries:
+- `numpy`
+- `pandas`
+- `scikit-learn`
+
+---
+
+## Steps to Generate Similarity Pickles
+
+1. **Prepare the Data**  
+   Ensure you have the raw data or embeddings used for generating the similarity matrix. This may include:
+   - Textual data (for NLP embeddings like TF-IDF or word embeddings)
+   - Image feature vectors
+   - Custom objects with serialized vector representations.
+
+2. **Run the Preprocessing Script**  
+   Use the provided script (if available) or follow these steps to generate the pickle files. An example Python script could look like this:
+   
+   ```python
+   import pickle
+   from sklearn.feature_extraction.text import TfidfVectorizer
+   import numpy as np
+   
+   # Example: Generating similarity matrices for a list of sentences
+   sentences = [
+       "This is a test sentence.",
+       "Another test sentence.",
+       "Computation of similarity matrices is interesting."
+   ]
+   
+   # Step 1: Create TF-IDF vectors
+   vectorizer = TfidfVectorizer()
+   tfidf_matrix = vectorizer.fit_transform(sentences)
+   
+   # Step 2: Compute similarity matrix (cosine similarity)
+  similarity = cosine_similarity(vector)
+   
+   # Step 3: Save similarity matrix as a pickle
+   with open("similarity_matrix.pkl", "wb") as f:
+       pickle.dump(similarity_matrix, f)
+       
+   print("Similarity pickle file created!")
+   ```
+
+3. **Save the Generated Pickles**  
+   Place the generated files (e.g., `similarity_matrix.pkl`) in a designated local directory for use during runtime.
+
+4. **Usage**  
+   Load the pickles in your codebase as shown below:
+   ```python
+   import pickle
+
+   with open("similarity_matrix.pkl", "rb") as f:
+       similarity_matrix = pickle.load(f)
+
+REPEAT THIS FOR EVERY BATCH OF DATA AS WE HAVE SPILTTED IT
+   ```
+
+---
+
+## Troubleshooting
+- **File Size Issues**: If the generated pickles are too large, consider breaking them into smaller parts or using optimized libraries like `Joblib` for large file handling.
+- **Missing Files at Runtime**: Ensure the pickles are in the correct directory specified in the configuration file or code.
+
+---
+
+## Notes
+- Do not include large files directly in your repository. Use tools like [Git Large File Storage (Git LFS)](https://git-lfs.github.com/) if necessary.
+- Document the exact process and parameters used to generate these files to maintain reproducibility.
+
+By following this documentation, contributors can regenerate or update the similarity pickle files as needed.
