@@ -2,6 +2,14 @@ import streamlit as st
 import pickle
 import requests
 import pandas as pd
+import os
+IS_CLOUD = os.getenv("STREAMLIT_CLOUD") is not None
+
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PICKLE_DIR = os.path.join(BASE_DIR, "pickle file", "movies pickle")
+
 
 # Fetch poster for movie
 def fetch_poster(ID, api_key):
@@ -24,18 +32,28 @@ def fetch_poster(ID, api_key):
 api_key = "39be2013"
 
 # Load movie data from pickle files
-all_movie_chunks = [
-    pickle.load(open(f"{i}th_movie_list.pkl", 'rb')) for i in range(1, 11)
-]
+# Load movie data from pickle files safely
+all_movie_chunks = []
+
+for i in range(1, 11):
+    file_path = os.path.join(BASE_DIR, f"{i}th_movie_list.pkl")
+    with open(file_path, "rb") as f:
+        all_movie_chunks.append(pickle.load(f))
+
 all_movies_df = pd.concat(all_movie_chunks, ignore_index=True)
 
-# Extract movie titles for the dropdown
-all_movies_titles = all_movies_df['Movie Name'].values
+# Extract movie titles
+all_movies_titles = all_movies_df["Movie Name"].values
 
-# Load similarity matrices from pickle files (optimized to avoid memory overload)
-similarity_matrices = [
-    pickle.load(open(f"{i}th_similarity.pkl", 'rb')) for i in range(1, 11)
-]
+
+# Load similarity matrices (memory-safe)
+similarity_matrices = []
+
+for i in range(1, 11):
+    file_path = os.path.join(BASE_DIR, f"{i}th_similarity.pkl")
+    with open(file_path, "rb") as f:
+        similarity_matrices.append(pickle.load(f))
+
 
 # Define header and dropdown for movie selection
 st.header("Indian Movie Recommender System")
@@ -83,4 +101,5 @@ if st.button("Show Recommendation"):
             with col:
                 st.text(recommended_movies[i])
                 st.image(recommended_posters[i])
+
 
