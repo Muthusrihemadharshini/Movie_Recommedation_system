@@ -1,4 +1,4 @@
-mport streamlit as st
+import streamlit as st
 import pickle
 import requests
 import pandas as pd
@@ -85,3 +85,4 @@ if st.button("Show Recommendation"):
                 st.image(recommended_posters[i])
 
 //
+
